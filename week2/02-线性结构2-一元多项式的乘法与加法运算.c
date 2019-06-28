@@ -1,7 +1,3 @@
-//
-// Created by Ruochen Xie on 2019-06-24.
-//
-
 //多项式表示
 //程序框架
 //读
@@ -20,7 +16,6 @@ struct PolyNode {
 Polynomial Read(void);
 Polynomial Multi(Polynomial P1, Polynomial P2);
 Polynomial Add(Polynomial P1, Polynomial P2);
-void Attach(int v, int e, Polynomial *pRear);
 void Print(Polynomial PP);
 int main(void) {
     Polynomial P1, P2;
@@ -40,32 +35,28 @@ int main(void) {
 
     return 0;
 }
+//
+
+void Attach(int v, int e, Polynomial *pRear);
 Polynomial Read(void) {
     int N, v, e = 0;
     Polynomial Rear, P, t;
     scanf("%d", &N);
 
-    P = (Polynomial)malloc(sizeof(struct PolyNode));
-    P->link = NULL;
-    Rear = P;
+    P = (Polynomial)malloc(sizeof(struct PolyNode)); P->link = NULL; Rear = P;
     while (N--) {
         scanf("%d %d", &v, &e);
         Attach(v, e, &Rear);
     }
-    t = P;
-    P = P->link;
-    free(t);
+    t = P; P = P->link; free(t);
 
     return P;
 }
 void Attach(int v, int e, Polynomial *pRear) {
-    Polynomial P;
-    P = (Polynomial)malloc(sizeof(struct PolyNode));
-    P->value = v;
-    P->expon = e;
-    P->link = NULL;
-    (*pRear)->link = P; //*
-    *pRear = P; // 为下一次做准备
+    Polynomial P = (Polynomial)malloc(sizeof(struct PolyNode));
+    P->value = v; P->expon = e; P->link = NULL;
+    (*pRear)->link = P;
+    *pRear = P;
 }
 Polynomial Add(Polynomial P1, Polynomial P2) {
     Polynomial t1, t2, P, Rear;
