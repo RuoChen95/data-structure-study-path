@@ -1,46 +1,54 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define MaxTree 20
-#define ElementType char
-#define Tree int
-#define Null -1
-
-struct TreeNode {
-    ElementType Element;
-    Tree Left;
-    Tree Right;
-} T1[MaxTree];
-
-Tree BuildAVLTree(struct TreeNode T[]);
-
+typedef struct AVLNode *AVLTree;
+struct AVLNode {
+    int Data;
+    int Height;
+    AVLTree Left;
+    AVLTree Right;
+};
+AVLTree Insert(int X, AVLTree T);
+int GetHeight(AVLTree T);
 int main(void) {
-    Tree R1;
+    AVLTree T = NULL;
+    int n;
+    scanf("%d", &n);
+    while(n--) {
+        int x;
+        scanf("%d", &x);
+        T = Insert(x, T);
+    }
 
-    R1 = BuildAVLTree(T1);
-
-    printf("%d\n", R1);
-
+    if (T) {
+        printf("%d", T->Data);
+    }
     return 0;
 }
-
-Tree BuildAVLTree(struct TreeNode T[]) {
-    int N, i, Root = Null;
-    char cl, cr;
-    scanf("%d", &N);
-    if (N) {
-        for (i = 0; i < N; i++) {
-            T[i].Element = (char)i;
-            scanf("\n%c %c", &cl, &cr);
-            if (cl != '-') {
-                T[i].Left = cl - '0';
-            } else T[i].Left = Null;
-
-            if (cr != '-') {
-                T[i].Right = cr - '0';
-            } else T[i].Right = Null;
+AVLTree Insert(int X, AVLTree T) {
+    if (T == NULL) {
+        T = (AVLTree)malloc(sizeof(struct AVLNode));
+        T->Data = X;
+        T->Height = 0;
+        T->Left = NULL;
+        T->Right = NULL;
+    } else if (X < T->Data) {
+        // 将X作为左值导入
+        T->Left = Insert(X, T->Left);
+        if (GetHeight(T->Left) - GetHeight(T->Right) == 2) {
+            if (X < T->Left->Data) {
+                T = SingleLeft(T);
+            } else {
+                T = DoubleLeft(T);
+            }
         }
-        Root = i;
+    } else if (X > T->Data) {
+
     }
-    return Root;
+    // height
+
+    return T;
+}
+int GetHeight(AVLTree T) {
+
 }
