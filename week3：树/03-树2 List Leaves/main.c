@@ -15,7 +15,7 @@ struct TreeNode {
 } T1[MaxTree];
 
 Tree BuildTree(struct TreeNode T[]);
-int Isomorphic(Tree R1);
+int Leafs(Tree R1);
 
 int main(void) {
     Tree R1;
@@ -37,15 +37,19 @@ Tree BuildTree(struct TreeNode T[]) {
         for (i = 0; i < N; i++) {
             T[i].Element = (char)i;
             scanf("\n%c %c", &cl, &cr);
-            if (cl != '-') {
+            if (cl == '-') {
+                T[i].Left = Null;
+            } else {
                 T[i].Left = cl - '0';
                 check[T[i].Left] = 1;
-            } else T[i].Left = Null;
+            }
 
-            if (cr != '-') {
+            if (cr == '-') {
+                T[i].Right = Null;
+            } else {
                 T[i].Right = cr - '0';
                 check[T[i].Right] = 1;
-            } else T[i].Right = Null;
+            }
         }
         for (i = 0; i < N; i++)
             if (!check[i]) break;
@@ -53,9 +57,9 @@ Tree BuildTree(struct TreeNode T[]) {
     }
     return Root;
 }
-int Isomorphic(Tree R1) {
+int Leafs(Tree R1) {
     Queue Q; Tree T;
-    int flag = 0;
+    int flag = 0; // 为了输出 4_1_5
     if (T == Null) {
         return 0;
     }

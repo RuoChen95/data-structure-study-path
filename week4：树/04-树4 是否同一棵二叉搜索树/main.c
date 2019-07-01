@@ -21,7 +21,9 @@ int main(void) {
     scanf("%d", &N);
     while(N) {
         scanf("%d", &L);
+        // 根据第一行序列建树
         T = MakeTree(N);
+        // 对于后续的每一行进行判断
         for (i = 0; i < L; i++ ){
             if (Judge(T, N)) printf("Yes\n");
             else printf("No\n");
@@ -37,36 +39,55 @@ Tree MakeTree(int N) {
     int i, V;
 
     scanf("%d", &V);
+    // 新建根节点
     T = NewNode(V);
     for (i = 1; i < N; i++) {
         scanf("%d", &V);
+        // 在T这个根节点处插入V
         T = Insert(T, V);
     }
     return T;
 }
-Tree NewNode(int V) {
-    Tree T = (Tree)malloc(sizeof(struct TreeNode));
-    T->v = V;
-    T->Left = T->Right = NULL;
-    T->flag = 0;
-    return T;
-}
 Tree Insert(Tree T, int V) {
+    // 如果节点不存在则新建
     if (!T) T = NewNode(V);
     else {
         if (V>T->v) {
-            T->Right = Insert(T->Right, V);
+            T->Right = Insert(T->Right, V); // 如果比根节点大则放在右边
         } else  {
-            T->Left = Insert(T->Left, V);
+            T->Left = Insert(T->Left, V); // 否则放在左边
         }
     }
+    return T; // 返回这个节点
+}
+Tree NewNode(int V) {
+    Tree T = (Tree)malloc(sizeof(struct TreeNode));
+    T->v = V;
+    T->Left = T->Right = NULL; // 一开始为Null
+    T->flag = 0;
     return T;
+}
+int Judge(Tree T, int N) {
+    int i, V, flag = 0;
+    scanf("%d", &V);
+    if (V!=T->v) {
+        flag = 1;
+    }else {
+        T->flag = 1;
+    }
+
+    for (i = 1; i < N; i++) {
+        scanf("%d", &V);
+        if ((!flag) && !check(T, V)) flag = 1;
+    }
+    if (flag) return 0;
+    return 1;
 }
 int check(Tree T, int V) {
     if (T->flag) {
-       if (V<T->v) return check(T->Left, V);
-       else if (V>T->v) return check(T->Right, V);
-       else return 0;
+        if (V<T->v) return check(T->Left, V);
+        else if (V>T->v) return check(T->Right, V);
+        else return 0;
     } else {
         if (V==T->v) {
             T->flag = 1;
@@ -75,19 +96,6 @@ int check(Tree T, int V) {
             return 0;
         }
     }
-}
-int Judge(Tree T, int N) { // bug
-    int i, V, flag = 0;
-    scanf("%d", &V);
-    if (V!=T->v) flag = 1;
-    else T->flag = 1;
-
-    for (i = 1; i < N; i++) {
-        scanf("%d", &V);
-        if ((!flag) && !check(T, V)) flag = 1;
-    }
-    if (flag) return 0;
-    return 1;
 }
 void ResetT( Tree T ) {
     if (T->Left) ResetT(T->Left);
