@@ -27,32 +27,38 @@ int main()
     return 0;
 }
 
-/* 你的代码将被嵌在这里 */
-List Merge( List L1, List L2 )
-{
-    List c,x;
-    x=(List)malloc(sizeof(struct Node)); 
-    L1=L1->Next;
-    L2=L2->Next;
-    c=x;
-    while(a&&b)
-    {
-        if(L1->Data<=L2->Data)
-        {
-            c->Next=L1;
-            c=L1;
-            L1=L1->Next;
-        }
-        else
-        {
-            c->Next=L2;
-            c=L2;
-            L2=L2->Next;
+List Merge( List L1, List L2 ) {
+    List a, b, x, c;
+    x = (List) malloc(sizeof(struct Node));
+    a = L1->Next;
+    b = L2->Next;
+
+    c = x;
+
+    while (a!= NULL && b!= NULL) {
+        if (a->Data <= b->Data) {
+            c->Next = a;//c这个地址的下一个元素为a
+            c=c->Next;//将c这个地址指向其下一层级
+
+
+            a = a->Next;
+        } else {
+            c->Next = b;
+            c=c->Next;
+
+
+            b= b->Next;
         }
     }
-    c->Next=L1?L1:L2; //如果L1存在，则指向L1；如果b存在，则指向b
+
+    if (a != NULL) {
+        c->Next = a;
+    }
+    if (b != NULL) {
+        c->Next = b;
+    }
+
     L1->Next=NULL;
     L2->Next=NULL;
     return x;
-    
 }
