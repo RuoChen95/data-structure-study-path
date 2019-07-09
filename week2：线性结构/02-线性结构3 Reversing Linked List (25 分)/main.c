@@ -1,7 +1,3 @@
-//
-// Created by Ruochen Xie on 2019-07-08.
-//
-
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -26,7 +22,6 @@ void Attach(int Address, int Data, int Next,Polynomial *pRear);
 
 Polynomial Reverse (Polynomial head, int K);
 void Print(Polynomial PP);
-Polynomial ReversingLinkedList( Polynomial head , int K );
 
 int main(void) {
     int first_address, N, K;
@@ -55,13 +50,34 @@ int main(void) {
         nextAddress = List[nextAddress].next;
     } while(nextAddress != -1);
 
+    P = P->link;
     // 反转
-    P = ReversingLinkedList(P, K);
+    P = Reverse(P, K);
+
 
     // 输出
     Print(P);
 
     return 0;
+}
+
+
+Polynomial Reverse (Polynomial head, int K) {
+    int cnt = 1;
+    Polynomial new = head;
+    Polynomial old = new->link;
+    Polynomial temp;
+
+    while (cnt < K) {
+        temp = old->link;
+        old->link = new;
+
+        new = old;
+        old = temp;
+        cnt++;
+    }
+    head->link = old;
+    return new;
 }
 
 void Attach(int Address, int Data, int Next, Polynomial *pRear) {
@@ -72,43 +88,12 @@ void Attach(int Address, int Data, int Next, Polynomial *pRear) {
 }
 
 void Print(Polynomial P) {
-    Polynomial PNext;
     while (P) {
         if (P->link != NULL) {
-            printf("%05d %d %05d", P->Address, P->Data, P->link->Address);
+            printf("%05d %d %05d\n", P->Address, P->Data, P->link->Address);
         } else {
             printf("%05d %d %d", P->Address, P->Data, -1);
         }
         P=P->link;
-        if (P) {
-            printf("\n");
-        }
     }
-}
-
-// *
-Polynomial Reverse (Polynomial head, int K) {
-    int count = 1;
-    Polynomial new = head->link;
-    Polynomial old = new->link;
-    Polynomial temp;
-    while (count < K) {
-        temp = old->link;
-        old->link = new;
-        new = old;
-        old = temp;
-        count++;
-    }
-    head->link->link = old;
-    return new;
-}
-
-// **
-Polynomial ReversingLinkedList( Polynomial head , int K ) {
-    // 循环：判断是否需要reverse
-
-    // 是：reverse一遍
-    // 修改head到old处
-
-    // 否：跳出
 }
