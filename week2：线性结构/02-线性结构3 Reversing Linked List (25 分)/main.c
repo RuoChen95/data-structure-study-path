@@ -19,6 +19,8 @@ struct PolyNode {
 };
 
 void Attach(int Address, int Data, int Next,Polynomial *pRear);
+Polynomial ReversingLinkedList (Polynomial head, int K);
+int NeedReverse (Polynomial head, int K);
 
 Polynomial Reverse (Polynomial head, int K);
 void Print(Polynomial PP);
@@ -52,7 +54,7 @@ int main(void) {
 
     P = P->link;
     // 反转
-    P = Reverse(P, K);
+    P = ReversingLinkedList (P, K);
 
 
     // 输出
@@ -61,6 +63,23 @@ int main(void) {
     return 0;
 }
 
+void Attach(int Address, int Data, int Next, Polynomial *pRear) {
+    Polynomial P = (Polynomial)malloc(sizeof(struct PolyNode));
+    P->Address = Address; P->Data = Data; P->Next = Next;
+    (*pRear)->link = P;
+    *pRear = (*pRear)->link;
+}
+
+void Print(Polynomial P) {
+    while (P) {
+        if (P->link != NULL) {
+            printf("%05d %d %05d\n", P->Address, P->Data, P->link->Address);
+        } else {
+            printf("%05d %d %d", P->Address, P->Data, -1);
+        }
+        P=P->link;
+    }
+}
 
 Polynomial Reverse (Polynomial head, int K) {
     int cnt = 1;
@@ -80,20 +99,36 @@ Polynomial Reverse (Polynomial head, int K) {
     return new;
 }
 
-void Attach(int Address, int Data, int Next, Polynomial *pRear) {
-    Polynomial P = (Polynomial)malloc(sizeof(struct PolyNode));
-    P->Address = Address; P->Data = Data; P->Next = Next;
-    (*pRear)->link = P;
-    *pRear = (*pRear)->link;
+int NeedReverse (Polynomial head, int K) {
+    int i;
+    if (head == NULL) {
+        return 0;
+    }
+    for ( i = 1; head->link != NULL; head = head->link) {
+        i++;
+        if ( i == K ) return 1; // 还有K个节点，逆转
+    }
+
+    return 0;
 }
 
-void Print(Polynomial P) {
-    while (P) {
-        if (P->link != NULL) {
-            printf("%05d %d %05d\n", P->Address, P->Data, P->link->Address);
-        } else {
-            printf("%05d %d %d", P->Address, P->Data, -1);
-        }
-        P=P->link;
+Polynomial ReversingLinkedList (Polynomial head, int K) {
+    Polynomial UnreversedHead = head; // 未逆转的链表的第一个节点
+    Polynomial ListHead; // 整个表的第一个节点
+    Polynomial TempTail; // 临时表尾部，用于连接下一段逆转的链表
+
+    if ( NeedReverse(UnreversedHead, K) ) {
+        ListHead = Reverse( UnreversedHead, K);
+        TempTail = UnreversedHead;
+        UnreversedHead = TempTail->link;
+    } else {
+        return head;
     }
+
+    while (NeedReverse( UnreversedHead, K)) {
+        TempTail->link = Reverse( UnreversedHead, K);
+        TempTail = UnreversedHead;
+        UnreversedHead = TempTail->link;
+    }
+    return ListHead;
 }
