@@ -28,37 +28,34 @@ int main()
 }
 
 List Merge( List L1, List L2 ) {
-    List a, b, x, c;
-    x = (List) malloc(sizeof(struct Node));
+    List a, b, L3, template;
     a = L1->Next;
     b = L2->Next;
 
-    c = x;
+    L3 = (List)malloc(sizeof(struct Node));
+    template = L3;
 
-    while (a!= NULL && b!= NULL) {
+    while (a&&b) {
         if (a->Data <= b->Data) {
-            c->Next = a;//c这个地址的下一个元素为a
-            c=c->Next;//将c这个地址指向其下一层级
-
-
+            template->Next = a;
+            template = template->Next;
             a = a->Next;
         } else {
-            c->Next = b;
-            c=c->Next;
-
-
-            b= b->Next;
+            template->Next = b;
+            template = template->Next;
+            b = b->Next;
         }
     }
 
-    if (a != NULL) {
-        c->Next = a;
+    if (a) {
+        template->Next = a;
     }
-    if (b != NULL) {
-        c->Next = b;
+    if (b) {
+        template->Next = b;
     }
 
-    L1->Next=NULL;
-    L2->Next=NULL;
-    return x;
+    L1->Next = NULL;
+    L2->Next = NULL;
+
+    return L3;
 }
