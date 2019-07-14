@@ -21,11 +21,11 @@ int GetHeight( AVLTree A );
 
 int main(void) {
     AVLTree T = NULL;
-    int n;
+    int n, i, x; // 二叉树的数据数量; 计数; 具体的数据
     scanf("%d", &n);
-    while(n--) {
-        int x;
+    for (i = 0; i < n; i++) {
         scanf("%d", &x);
+        // 数据源不保证为二叉树
         T = Insert(T, x);
     }
 

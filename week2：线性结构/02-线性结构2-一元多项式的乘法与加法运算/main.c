@@ -17,6 +17,7 @@ Polynomial Read(void);
 Polynomial Multi(Polynomial P1, Polynomial P2);
 Polynomial Add(Polynomial P1, Polynomial P2);
 void Print(Polynomial PP);
+
 int main(void) {
     Polynomial P1, P2;
     // 读入1
@@ -35,7 +36,6 @@ int main(void) {
 
     return 0;
 }
-//
 
 void Attach(int v, int e, Polynomial *pRear);
 Polynomial Read(void) {
@@ -43,12 +43,15 @@ Polynomial Read(void) {
     Polynomial Rear, P, t;
     scanf("%d", &N);
 
-    P = (Polynomial)malloc(sizeof(struct PolyNode)); P->link = NULL; Rear = P;
+    P = (Polynomial)malloc(sizeof(struct PolyNode));
+    Rear = P;
+
     while (N--) {
         scanf("%d %d", &v, &e);
         Attach(v, e, &Rear);
     }
-    t = P; P = P->link; free(t);
+
+    t = P; P = P->link; free(t); // 头部节点非空
 
     return P;
 }
@@ -64,7 +67,6 @@ Polynomial Add(Polynomial P1, Polynomial P2) {
     t1 = P1;
     t2 = P2;
     P = (Polynomial)malloc(sizeof(struct PolyNode));
-    P->link = NULL;
     Rear = P;
     while (t1 && t2) {
         if (t1->expon == t2->expon) {
@@ -101,9 +103,11 @@ Polynomial Multi(Polynomial P1, Polynomial P2) {
 
     if (!P1 || !P2) return NULL;
 
-    t1 = P1; t2 = P2;
-    P = (Polynomial)malloc(sizeof(struct PolyNode)); P->link = NULL;
+    t1 = P1;
+    t2 = P2;
+    P = (Polynomial)malloc(sizeof(struct PolyNode));
     Rear = P;
+
     while(t2) {
         Attach(t1->value * t2->value, t1->expon + t2->expon, &Rear);
         t2 = t2->link;
@@ -114,32 +118,40 @@ Polynomial Multi(Polynomial P1, Polynomial P2) {
         while(t2) {
             c = t1->value * t2->value;
             e = t1->expon + t2->expon;
+            // link到指数小于等于e的地方
             while(Rear->link && Rear->link->expon > e) {
                 Rear = Rear->link;
             }
+            // 如果这个指数等于e的话
             if (Rear->link && Rear->link->expon == e) {
+                // 非0：
+                // 相加
                 if (Rear->link->value+c) {
                     Rear->link->value+=c;
-                } else {
+                }
+                    // 为0：
+                    // 删除
+                else {
                     t = Rear->link;
                     Rear->link = t->link;
                     free(t);
                 }
-            } else {
+            }
+                // 如果这个指数小于e的话
+            else {
+                // 插入
                 t = (Polynomial)malloc(sizeof(struct PolyNode));
                 t->value = c;
                 t->expon = e;
                 t->link = Rear->link;
                 Rear->link = t;
-                Rear = Rear->link;
+                Rear = Rear->link; //为下次的循环做准备
             }
             t2 = t2->link;
         }
         t1 = t1->link;
     }
-    t2 = P;
     P = P->link;
-    free(t2);
     return P;
 }
 void Print(Polynomial P) {
