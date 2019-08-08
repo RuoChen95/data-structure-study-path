@@ -28,7 +28,7 @@ int main(void) {
 
     getArray(A, N);
 
-    insert_Sort(A, N);
+    Heap_Sort(A, N);
 
     showArray(A, N);
     return 0;
@@ -96,7 +96,14 @@ void shell_Sort( ElementType A[], int N) {
     }
 }
 
+
+
+
+
+
+
 void Heap_Sort_Simple( ElementType A[], int N) {
+    // ÓÃµ½ÁËc++µÄ±ê×¼Ä£°å¿â£¨ÓÅÏÈ¶ÓÁĞ - ¶Ñ)
     priority_queue<ElementType, vector<ElementType>, greater<ElementType>> q;
     int i;
     ElementType TmpA[MaxNumber];
@@ -113,38 +120,49 @@ void Heap_Sort_Simple( ElementType A[], int N) {
         A[i] = TmpA[i];
     }
 }
-void PercDown( ElementType A[], int p, int N )
-{ /* æ”¹ç¼–ä»£ç 4.24çš„PercDown( MaxHeap H, int p )    */
-    /* å°†Nä¸ªå…ƒç´ çš„æ•°ç»„ä¸­ä»¥A[p]ä¸ºæ ¹çš„å­å †è°ƒæ•´ä¸ºæœ€å¤§å † */
-    int Parent, Child;
-    ElementType X;
-
-    X = A[p]; /* å–å‡ºæ ¹ç»“ç‚¹å­˜æ”¾çš„å€¼ */
-    for( Parent=p; (Parent*2+1)<N; Parent=Child ) {
-        Child = Parent * 2 + 1;
-        if( (Child!=N-1) && (A[Child]<A[Child+1]) )
-            Child++;  /* ChildæŒ‡å‘å·¦å³å­ç»“ç‚¹çš„è¾ƒå¤§è€… */
-        if( X >= A[Child] ) break; /* æ‰¾åˆ°äº†åˆé€‚ä½ç½® */
-        else  /* ä¸‹æ»¤X */
-            A[Parent] = A[Child];
-    }
-    A[Parent] = X;
-}
 
 void Heap_Sort( ElementType A[], int N )
-{ /* å †æ’åº */
+{
     int i;
 
-    for ( i=N/2-1; i>=0; i-- )/* å»ºç«‹æœ€å¤§å † */
+    // ½¨Á¢×î´ó¶Ñ
+    for ( i=N/2-1; i>=0; i-- )
         PercDown( A, i, N );
 
     for ( i=N-1; i>0; i-- ) {
-        /* åˆ é™¤æœ€å¤§å †é¡¶ */
-        Switch( &A[0], &A[i] ); /* è§ä»£ç 7.1 */
+        // É¾³ı×î´ó¶Ñ¶¥
+        Switch( &A[0], &A[i] );
+
+        // ÖØĞÂ½¨Á¢×î´ó¶Ñ1
         PercDown( A, 0, i );
     }
 }
+void PercDown( ElementType A[], int p, int N )
+{
+    /* ¸Ä±à´úÂë4.24µÄPercDown( MaxHeap H, int p )    */
+    /* ½«N¸öÔªËØµÄÊı×éÖĞÒÔA[p]Îª¸ùµÄ×Ó¶Ñµ÷ÕûÎª×î´ó¶Ñ */
+    int Parent, Child;
+    ElementType X;
 
+    X = A[p]; /* È¡³ö¸ù½áµã´æ·ÅµÄÖµ */
+    for( Parent=p; (Parent*2+1)<N; Parent=Child ) {
+        Child = Parent * 2 + 1;
+        if( (Child!=N-1) && (A[Child]<A[Child+1]) )
+            Child++;  /* ChildÖ¸Ïò×óÓÒ×Ó½áµãµÄ½Ï´óÕß */
+        if( X >= A[Child] ) break; /* ÕÒµ½ÁËºÏÊÊÎ»ÖÃ */
+        else  /* ÏÂÂËX */
+            A[Parent] = A[Child];
+    }
+    A[Child] = X;
+}
+
+
+
+
+
+
+
+// ±ê×¼µÄº¯Êı½Ó¿Ú
 void Merge_Sort(ElementType A[], int N) {
     ElementType *TmpA;
     TmpA = (ElementType *)malloc(N*sizeof(ElementType));
@@ -153,26 +171,41 @@ void Merge_Sort(ElementType A[], int N) {
         MSort( A, TmpA, 0, N-1 );
         free( TmpA );
     }
-    else printf( "ç©ºé—´ä¸è¶³" );
+    else printf( "space is not enough" );
 }
-
-void MSort( ElementType A[], ElementType TmpA[], int L, int RightEnd) {
+// µİ¹éËã·¨²ßÂÔ
+void MSort( ElementType A[], ElementType TmpA[], int L, int RightEnd ) {
     int Center;
     if (L<RightEnd) {
         Center = (L + RightEnd) / 2;
-        MSort(A, TmpA, L, Center);
-        MSort(A, TmpA, Center+1, RightEnd);
-        Merge(A, TmpA, L, Center+1, RightEnd);
+        MSort(A, TmpA, L, Center); // ×ó±ßÅÅºÃĞò
+        MSort(A, TmpA, Center+1, RightEnd); // ÓÒ±ßÅÅºÃĞò
+        Merge(A, TmpA, L, Center+1, RightEnd); // ½øĞĞºËĞÄµÄºÏ²¢
     }
 }
+/*
 
+ÀàËÆÓÚÏßĞÔ±íµÄºÏ²¢£¬×óÓÒÁ½¸öĞòÁĞ¶¼ÊÇÓĞĞòµÄ
+
+A: Ô­Ê¼´ıÅÅĞòÁĞ
+temp£ºÁÙÊ±Êı×é
+L: ×ó±ßÆğÊ¼Î»ÖÃ
+R: ÓÒ±ßÆğÊ¼Î»ÖÃ
+RightEnd: ÓÒ±ßÖÕµãÎ»ÖÃ
+*/
 void Merge (ElementType A[], ElementType TmpA[], int L, int R, int RightEnd) {
     int LeftEnd = R - 1;
-    int Tmp = L; // ä»å“ªé‡Œå¼€å§‹å­˜æ”¾
-    int NumElements = RightEnd - L + 1; // å…ƒç´ æ€»ä¸ªæ•° N
+    int Tmp = L;
+    int Start = L; // ¿ªÊ¼´æ·ÅµÄÎ»ÖÃ£¨×ó±ßÆğÊ¼Î»ÖÃ£©
+    int NumElements = RightEnd - L + 1; // ´æÔÚµÄÔªËØÊıÄ¿
+    // Ê±¼ä¸´ÔÓ¶ÈÎªO(N)
     while (L <= LeftEnd && R <= RightEnd) {
-        if (A[L] <= A[R]) TmpA[Tmp++] = A[L++];
-        else    TmpA[Tmp++] = A[R++];
+        if (A[L] <= A[R]) {
+            TmpA[Tmp++] = A[L++]; // ÏÈ¸³Öµ£¬ºó×Ô¼Ó1
+        }
+        else {
+            TmpA[Tmp++] = A[R++];
+        }
     }
     while (L <= LeftEnd) {
         TmpA[Tmp++] = A[L++];
@@ -181,7 +214,7 @@ void Merge (ElementType A[], ElementType TmpA[], int L, int R, int RightEnd) {
         TmpA[Tmp++] = A[R++];
     }
     int i;
-    for (i = 0; i < NumElements; i++, RightEnd--) {
-        A[RightEnd] = TmpA[RightEnd];
+    for (i = 0; i < NumElements; i++, Start++) {
+        A[Start] = TmpA[Start];
     }
 }
