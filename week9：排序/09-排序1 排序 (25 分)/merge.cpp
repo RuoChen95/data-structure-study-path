@@ -52,6 +52,8 @@ void Merge_Sort(ElementType A[], int N) {
         while(length < N) {
             // 保证while循环跳出后，结果存在A内
             MSort_new(A, TmpA, N, length);
+            showArray(A, N);
+            printf("\n");
             length = length * 2;
             MSort_new(TmpA, A, N, length);
             length = length * 2;

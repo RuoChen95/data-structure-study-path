@@ -18,6 +18,8 @@ ElementType First( ElementType A[], int Left, int Right);
 void Qsort( ElementType A[], int Left, int Right );
 void QuickSort( ElementType A[], int N );
 void InsertionSort( ElementType A[], int Left, int Right );
+
+void tableSort ( ElementType A[], int N);
 int main(void) {
     int N;
     int A[MaxNumber] = {0};
@@ -118,12 +120,12 @@ void Qsort( ElementType A[], int Left, int Right )
     int P, Cutoff = 50, Low, High;
 
     if ( Cutoff <= Right-Left ) {
-//		// Median 
-//		P = Median3(A, Left, Right);
-//		// First
+		// Median 
+		P = Median3(A, Left, Right);
+		// First
 //		P = First(A, Left, Right);
 		// Random
-		P = Random(A, Left, Right);
+//		P = Random(A, Left, Right);
 		
         Low = Left;
         High = Right - 1;
@@ -158,4 +160,15 @@ void InsertionSort( ElementType A[], int Left, int Right ) {
         }
         A[i]= temp;
     }
+}
+
+void tableSort ( ElementType A[], int N)
+{
+	 int table[MaxNumber] = {0};
+	 
+	 int i = 0;
+	 for (i = 0;i<N;i++) {
+	 	table[i] = i;
+	 }
+	 
 }
