@@ -14,11 +14,6 @@ void showArray (ElementType A[], int N);
 void one_step_insert_Sort( ElementType A[], int N, int p); 
 void one_step_Merge_Sort(ElementType A[], int N, int L);
 
-void Switch (int * a, int * b);
-void MSort( ElementType A[], ElementType TmpA[], int L, int RightEnd);
-void Merge (ElementType A[], ElementType TmpA[], int L, int R, int RightEnd);
-
-void PercDown( ElementType A[], int p, int N );
 
 void Merge_Sort(ElementType A[], int N);
 void MSort_new( ElementType A[], ElementType TmpA[], int L, int RightEnd);
@@ -42,12 +37,12 @@ int main(void) {
 	flag = distinguish(A, B, N);
 	if (flag){
 		printf("Insertion Sort\n");
-		one_step_insert_Sort( B, N, flag);
+		one_step_insert_Sort(B, N, flag);
 		showArray(B, N);
 	} else {
 		printf("Merge Sort\n");
 		int L = getLength(B, N);
-		one_step_Merge_Sort( B, N, L);
+		one_step_Merge_Sort(B, N, L);
 		showArray(B, N);
 	}
 	
@@ -66,11 +61,6 @@ void showArray (ElementType A[], int N) {
     for (i = 1; i < N; i++) {
         printf(" %d", A[i]);
     }
-}
-void Switch (int * a, int * b) {
-    int temp = *a;
-    *a = *b;
-    *b = temp;
 }
 
 
@@ -147,7 +137,7 @@ void Merge1 (ElementType A[], ElementType TmpA[], int L, int R, int RightEnd) {
     }
 }
 
-
+// ÅÐ¶ÏÊÇ·ñÎª²åÈëÅÅÐò 
 int distinguish(ElementType A[], ElementType B[], int N){
 	int i, j;
 	for (i = 0; i < N-1; i++){
@@ -160,7 +150,7 @@ int distinguish(ElementType A[], ElementType B[], int N){
 			return 0;
 		}
 	}
-	return i+1;
+	return i;
 }
 
 int getLength(ElementType B[], int N){
