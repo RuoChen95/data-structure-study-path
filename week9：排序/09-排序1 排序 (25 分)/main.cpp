@@ -30,7 +30,7 @@ int main(void) {
 
     getArray(A, N);
 
-    Heap_Sort(A, N);
+    Merge_Sort(A, N);
 
     showArray(A, N);
     return 0;
@@ -112,7 +112,7 @@ void shell_Sort( ElementType A[], int N) {
 
 
 void Heap_Sort_Simple( ElementType A[], int N) {
-    priority_queue <ElementType, vector<ElementType>, greater<ElementType>> q;
+    priority_queue <ElementType, vector<ElementType>, greater<ElementType> > q;
     int i;
     ElementType temp[MaxNumber];
     for (i = 0; i < N; i++) {
