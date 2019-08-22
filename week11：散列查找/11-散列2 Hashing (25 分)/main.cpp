@@ -1,5 +1,5 @@
 // 开放地址法 -> 平方探测法
-// with positive increments only
+// "with positive increments only"
 
 #include <stdio.h>
 #include <stdlib.h>
