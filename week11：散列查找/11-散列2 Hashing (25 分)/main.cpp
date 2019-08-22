@@ -1,6 +1,5 @@
-// 代码参考 https://www.icourse163.org/learn/ZJU-93001?tid=1206471203#/learn/content?type=detail&id=1211167121&cid=1213729413
-// 开放地址法
-// 平方探测法 
+// 开放地址法 -> 平方探测法
+// with positive increments only
 
 #include <stdio.h>
 #include <stdlib.h>
