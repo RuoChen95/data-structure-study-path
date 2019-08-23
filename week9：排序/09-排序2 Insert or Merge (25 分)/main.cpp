@@ -137,7 +137,8 @@ void Merge1 (ElementType A[], ElementType TmpA[], int L, int R, int RightEnd) {
     }
 }
 
-// 判断是否为插入排序 
+// 判断是否为插入排序 ls 
+// 如果为插入排序，至少前两个有序（partially sorted sequence） 
 int distinguish(ElementType A[], ElementType B[], int N){
 	int i, j;
 	for (i = 0; i < N-1; i++){
@@ -150,15 +151,18 @@ int distinguish(ElementType A[], ElementType B[], int N){
 			return 0;
 		}
 	}
-	return i;
+	return i+1;
 }
 
+// 判断归并段长度 Mg 
 int getLength(ElementType B[], int N){
 	int l;
+	int j; 
 	for (l = 2; l <= N; l *= 2){
-		while (l <= N) {
-			if (B[l-1] <= B[l]){
-				l = l + l*2;
+		j = l;
+		while (j <= N-l) {
+			if (B[j-1] <= B[j]){
+				j = j + l*2;
 			} else {
 				return l;
 			}
