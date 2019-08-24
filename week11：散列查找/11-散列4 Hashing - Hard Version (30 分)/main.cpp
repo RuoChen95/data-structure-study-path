@@ -1,10 +1,7 @@
-// ConsoleApplication1.cpp : å®šä¹‰æ§åˆ¶å°åº”ç”¨ç¨‹åºçš„å…¥å£ç‚¹ã€‚
+// ConsoleApplication1.cpp : ¶¨Òå¿ØÖÆÌ¨Ó¦ÓÃ³ÌĞòµÄÈë¿Úµã¡£
 //
 
-#include "targetver.h"
-
 #include <stdio.h>
-#include <tchar.h>
 #include <stdlib.h>
 #include <cmath>
 #include <queue> // priority_queue
@@ -21,12 +18,10 @@ using namespace std; // priority_queue
 #define MaxNumber 1000
 
 
-void Heap_Sort_Simple( ElementType A[], int N);
-
 int main(void) {
     int N;
     
-	scanf_s("%d", &N);
+	scanf("%d", &N);
 
 	// build adj
 	int i;
@@ -38,25 +33,29 @@ int main(void) {
 	vector<int> Adj[MaxNumber];
 	int j;
 	for (i = 0; i < N; i++) {
-		scanf_s("%d", &HASH[i]);
+		scanf("%d", &HASH[i]);
 	}
 	for (i = 0; i < N; i++) {
-		Need_Index = HASH[i]%MOD;
-		True_Index = i;
-		if ( Need_Index == i) {
-			Indegree[i] = 0;
-		} else {
-			Indegree[i] = (True_Index - Need_Index + N) % N;
-			for (j = 0; j < Indegree[i]; j++){
-				Adj[(Need_Index+j+N) % N].push_back(i);
+		if (HASH[i] != -1){
+			Need_Index = HASH[i]%MOD;
+			True_Index = i;
+			if ( Need_Index == i) {
+				Indegree[i] = 0;
+			} else {
+				Indegree[i] = (True_Index - Need_Index + N) % N;
+				for (j = 0; j < Indegree[i]; j++){
+					Adj[(Need_Index+j+N) % N].push_back(i);
+				}
 			}
+		} else {
+			Indegree[i] = -1;
+			Adj[i].push_back(-1);
 		}
 	}
 
 
 	// build order
 	priority_queue <ElementType, vector<ElementType>, greater<ElementType> > QHASH;
-	priority_queue <ElementType, vector<ElementType>, greater<ElementType> > QIndex;
 	int size;
 	int p, pIndex;
 	int TopOrder[MaxNumber];
@@ -64,26 +63,41 @@ int main(void) {
 
 	for(int i = 0; i < N; i++) {
 		if(Indegree[i] == 0){
-			QHASH.push(HASH[i]);
-			QIndex.push(i);
+			QHASH.push(HASH[i]); // ÔÚ¶àÖÖÑ¡ÔñµÄÊ±ºòÊä³öÖµÎª×îĞ¡µÄ
         }
 	}
     while(!QHASH.empty()){
-        p = QHASH.top(); /* å¼¹å‡ºä¸€ä¸ªå…¥åº¦ä¸º0çš„é¡¶ç‚¹ */
-		pIndex = QIndex.top();
-		TopOrder[cnt++] = p; /* å°†ä¹‹å­˜ä¸ºç»“æœåºåˆ—çš„ä¸‹ä¸€ä¸ªå…ƒç´  */
+        p = QHASH.top(); /* µ¯³öÒ»¸öÈë¶ÈÎª0µÄ¶¥µã */
+		TopOrder[cnt++] = p; /* ½«Ö®´æÎª½á¹ûĞòÁĞµÄÏÂÒ»¸öÔªËØ */
 		QHASH.pop();
-		QIndex.pop();
-		/* å¯¹Vçš„æ¯ä¸ªé‚»æ¥ç‚¹W->AdjV */
+
+		// pIndex
+		for ( i = 0; i < N; i++){
+			if (p == HASH[i]) {
+				pIndex = i;
+				break;
+			}
+		}
+
+//		printf("%d %d\n", pIndex, p);
+
+		/* ¶ÔVµÄÃ¿¸öÁÚ½ÓµãW->AdjV */
 		for (i = 0; i < Adj[pIndex].size(); i++) {
-			if (--Indegree[i] == 0) {
-				QHASH.push(HASH[i]);
-				QIndex.push(i);
+
+			if (--Indegree[Adj[pIndex][i]] == 0) {
+				QHASH.push(HASH[Adj[pIndex][i]]);
 			}
 		}
 
     }
+    
+    
+	printf("%d", TopOrder[0]);
+    for (i = 1; i < cnt; i++) {
+    	printf(" %d", TopOrder[i]);
+	}
 
 
     return 0;
 }
+
