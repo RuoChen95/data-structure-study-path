@@ -1,10 +1,4 @@
 #include <stdio.h>
-#include <stdbool.h>
-#include <queue>
-#include <stdlib.h> 
-#include <time.h> 
-
-using namespace std;
 
 #define MaxNumber 100000
 #define ElementType int
@@ -19,29 +13,29 @@ void insert_Sort( ElementType A[], int N, int table[]);
 
 void setTable ( int table[], int N);
 
-void physicalSwap (ElementType A[], int N);
-
 void showTable (int table[], int N);
 
 // 表排序 
 int main(void) {
-    int N;
+    int N, i;
     int A[MaxNumber] = {0};
-    int table[MaxNumber] = {0};
+    int table[MaxNumber] = {0}; // 指针数组（详见表排序） 
     int AFlag[MaxNumber] = {0}; // don't change the A array 存储元素是否被访问过 
     
     scanf("%d", &N);
 
     getArray(A, N);
-    setTable(table, N);
+    
+    for (i = 0;i<N;i++) {
+		table[A[i]] = i;
+	}
 
-    insert_Sort(A, N, table);
 
 	// showTable(table, N);
     
     // showArray(A, N, table);
     
-	int i, nextIndex;
+	int nextIndex;
 	int hasZero = 0; // loop including 0 or not
 	int totalLength = 0; // loop length 
 	int result = 0; // result
@@ -100,34 +94,4 @@ void showTable (int table[], int N){
     }
     printf("\n");
 }
-void Swap (int * a, int * b) {
-    int temp = *a;
-    *a = *b;
-    *b = temp;
-}
 
-// 使用插入排序作为演示 假设第一张牌在手里 
-void insert_Sort( ElementType A[], int N, int table[]) {
-    int p, temp, i, temp2;
-    for (p = 1; p < N; p++) {
-        temp = A[table[p]];
-        temp2 = table[p];
-        for (i = p; i >= 1 && temp < A[table[i - 1]]; i--) { // 如果后一个比前一个要小 
-            table[i] = table[i-1]; // 进行table的交换而不是A的交换 
-        }
-        table[i] = temp2; // 注意之前i--了 
-    }
-}
-
-// 指针数组的初始化 
-void setTable ( int table[], int N){
-	int i;
-	for (i = 0;i<N;i++) {
-		table[i] = i;
-	}
-	 
-}
-
-void physicalSwap (ElementType A[], int N) {
-	// TODO
-}
