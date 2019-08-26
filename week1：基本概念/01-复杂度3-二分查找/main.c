@@ -30,10 +30,23 @@ int main()
 }
 
 /* 你的代码将被嵌在这里 */
-int BinarySearch(List L, ElementType X) {
-    if (X == L(L.Data[MAXSIZE]/2)) {
-        return L.Data[MAXSIZE]/2
-    } else {
-        BinarySearch(List L, ElementType X)
+Position BinarySearch( List L, ElementType X ) {
+    int last = L->Last;
+    int first = 1;
+    int middle, number;
+
+    while (first <= last) {
+        middle = (last+first)/2;
+
+        number = L->Data[middle];
+        if (number == X) {
+            return middle;
+        } else if (number > X) {
+            last = middle - 1;
+        } else {
+            first = middle + 1;
+        }
     }
+
+    return NotFound;
 }
