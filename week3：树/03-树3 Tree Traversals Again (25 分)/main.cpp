@@ -5,6 +5,9 @@
 #define MAXNUMBER 30
 using namespace std;
 
+// pre: 先序遍历顺序
+// in: 中
+// post: 后
 int pre[MAXNUMBER] = {0}, in[MAXNUMBER] = {0}, post[MAXNUMBER] = {0};
 void solve(int preL, int inL, int postL, int n);
 int main (void){
@@ -31,6 +34,7 @@ int main (void){
 	return 0;
 }
 
+// 先序、中序、后序第一个节点的位置 + 节点的长度
 void solve(int preL, int inL, int postL, int n) {
 	int root;
 	int i;
@@ -42,14 +46,16 @@ void solve(int preL, int inL, int postL, int n) {
 		return;
 	}
 
+	// pre的第一个元素一定在post的最后一个上
 	root = pre[preL];
 	post[postL+n-1] = root;
 
-	for (i = 0; i <n; i++){
+	// 利用中序遍历确认左右的位置
+	for (i = 0; i < n; i++){
 		if (in[inL+i] == root) break;
 	}
 	L = i;
-	R = n-L -1;
+	R = n-L-1;
 
 	solve(preL+1, inL, postL, L);
 	solve(preL+L+1, inL+L+1, postL+L, R);
