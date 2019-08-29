@@ -126,7 +126,7 @@ int BFS(int index, int N, int Dis, queue<int> Q) {
 				// v的每个临节点w（007能跳到） 注意正确的计算方法
 					if (abs(pow(node[i].x - node[index].x, 2) + pow(node[i].y - node[index].y, 2))<= pow(Dis,2)) {
 						node[i].tag = 1;
-						Q.push(index);
+						Q.push(i); // !!!注意这里是i
 					}
 				}
 			}

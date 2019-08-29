@@ -30,7 +30,7 @@ int main(void) {
 
     getArray(A, N);
 
-    Merge_Sort(A, N);
+    Heap_Sort(A, N);
 
     showArray(A, N);
     return 0;
