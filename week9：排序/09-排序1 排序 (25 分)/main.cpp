@@ -77,7 +77,8 @@ void bubble_Sort( ElementType A[], int N) {
         }
     }
 }
-// indexÎª0Ä¬ÈÏÒÑ¾­ÔÚÊÖÉÏÁË
+
+// indexä¸º0é»˜è®¤å·²ç»åœ¨æ‰‹ä¸Šäº†
 void insert_Sort( ElementType A[], int N) {
     int p, temp, i;
     for (p = 1; p < N; p++) {
@@ -93,11 +94,13 @@ void insert_Sort( ElementType A[], int N) {
 
 
 
+
+
 void shell_Sort( ElementType A[], int N) {
     int D;
     int p, temp, i;
-    for (D = N/2; D >= 1; D = D/2) { // Ô­Ê¼µÄÔöÁ¿ĞòÁĞ
-        for (p = D; p < N; p++) { // ²åÈëÅÅĞò
+    for (D = N/2; D >= 1; D = D/2) { // åŸå§‹çš„å¢é‡åºåˆ—
+        for (p = D; p < N; p++) { // æ’å…¥æ’åº
             temp = A[p];
             for (i = p; i >= D && temp < A[i - D]; i = i - D) {
                 A[i] = A[i -D];
@@ -154,7 +157,7 @@ void PercDown( ElementType A[], int p, int N )
 }
 
 
-// ±ê×¼µÄº¯Êı½Ó¿Ú
+// æ ‡å‡†çš„å‡½æ•°æ¥å£
 void Merge_Sort(ElementType A[], int N) {
     ElementType *TmpA;
     TmpA = (ElementType *)malloc(N*sizeof(ElementType));
@@ -165,35 +168,35 @@ void Merge_Sort(ElementType A[], int N) {
     }
     else printf( "space is not enough" );
 }
-// µİ¹éËã·¨²ßÂÔ
+// é€’å½’ç®—æ³•ç­–ç•¥
 void MSort( ElementType A[], ElementType TmpA[], int L, int RightEnd ) {
     int Center;
     if (L<RightEnd) {
         Center = (L + RightEnd) / 2;
-        MSort(A, TmpA, L, Center); // ×ó±ßÅÅºÃĞò
-        MSort(A, TmpA, Center+1, RightEnd); // ÓÒ±ßÅÅºÃĞò
-        Merge(A, TmpA, L, Center+1, RightEnd); // ½øĞĞºËĞÄµÄºÏ²¢
+        MSort(A, TmpA, L, Center); // å·¦è¾¹æ’å¥½åº
+        MSort(A, TmpA, Center+1, RightEnd); // å³è¾¹æ’å¥½åº
+        Merge(A, TmpA, L, Center+1, RightEnd); // è¿›è¡Œæ ¸å¿ƒçš„åˆå¹¶
     }
 }
 /*
 
-ÀàËÆÓÚÏßĞÔ±íµÄºÏ²¢£¬×óÓÒÁ½¸öĞòÁĞ¶¼ÊÇÓĞĞòµÄ
+ç±»ä¼¼äºçº¿æ€§è¡¨çš„åˆå¹¶ï¼Œå·¦å³ä¸¤ä¸ªåºåˆ—éƒ½æ˜¯æœ‰åºçš„
 
-A: Ô­Ê¼´ıÅÅĞòÁĞ
-temp£ºÁÙÊ±Êı×é
-L: ×ó±ßÆğÊ¼Î»ÖÃ
-R: ÓÒ±ßÆğÊ¼Î»ÖÃ
-RightEnd: ÓÒ±ßÖÕµãÎ»ÖÃ
+A: åŸå§‹å¾…æ’åºåˆ—
+tempï¼šä¸´æ—¶æ•°ç»„
+L: å·¦è¾¹èµ·å§‹ä½ç½®
+R: å³è¾¹èµ·å§‹ä½ç½®
+RightEnd: å³è¾¹ç»ˆç‚¹ä½ç½®
 */
 void Merge (ElementType A[], ElementType TmpA[], int L, int R, int RightEnd) {
     int LeftEnd = R - 1;
     int Tmp = L;
-    int Start = L; // ¿ªÊ¼´æ·ÅµÄÎ»ÖÃ£¨×ó±ßÆğÊ¼Î»ÖÃ£©
-    int NumElements = RightEnd - L + 1; // ´æÔÚµÄÔªËØÊıÄ¿
-    // Ê±¼ä¸´ÔÓ¶ÈÎªO(N)
+    int Start = L; // å¼€å§‹å­˜æ”¾çš„ä½ç½®ï¼ˆå·¦è¾¹èµ·å§‹ä½ç½®ï¼‰
+    int NumElements = RightEnd - L + 1; // å­˜åœ¨çš„å…ƒç´ æ•°ç›®
+    // æ—¶é—´å¤æ‚åº¦ä¸ºO(N)
     while (L <= LeftEnd && R <= RightEnd) {
         if (A[L] <= A[R]) {
-            TmpA[Tmp++] = A[L++]; // ÏÈ¸³Öµ£¬ºó×Ô¼Ó1
+            TmpA[Tmp++] = A[L++]; // å…ˆèµ‹å€¼ï¼Œåè‡ªåŠ 1
         }
         else {
             TmpA[Tmp++] = A[R++];
