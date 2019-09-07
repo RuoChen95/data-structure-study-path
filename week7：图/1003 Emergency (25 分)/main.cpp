@@ -1,4 +1,5 @@
-
+#include "stdafx.h"
+#pragma warning(disable:4996)
 #include <iostream>
 using namespace std;
 
@@ -41,8 +42,8 @@ int main(void) {
     int w[MAX];
     for ( i = 0; i < N; i++) {
         dist[i] = INFI;
-        num[i] = 0;
-        w[i] = 0;
+        num[i] = 0; // 最短路径长度
+        w[i] = 0; // 最大点权之和
     }
     dist[C1] = 0;
     num[C1] = 1;
@@ -56,9 +57,9 @@ int main(void) {
         int u = -1;
         int min = INFI;
         for (j = 0; j < N; j++) {
-            if (visit[j] == 0 && dist[i] < min) {
-                u = i;
-                min = dist[i];
+            if (visit[j] == 0 && dist[j] < min) {
+                u = j;
+                min = dist[j];
             }
         }
         if (u == -1) {
