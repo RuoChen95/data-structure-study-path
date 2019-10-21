@@ -1,80 +1,77 @@
-
-#include <iostream>
+#include "stdafx.h"
+#pragma warning(disable:4996)
+#include <cstdio>
 #include <queue>
 
 using namespace std;
 
-#define INFI 1000000
-#define MAX 31
-struct Node {
+#define maxv 31
+
+struct node {
 	int data;
-	Node* lchild;
-	Node* rchild;
+	node* left;
+	node* right;
 };
 
-int post[MAX], in[MAX];
-int N, num = 0;
+int post[maxv], in[maxv];
+int N;
 
-Node* solve(int postL, int postR, int inL, int inR) {
+node* solve(int postL, int postR, int inL, int inR) {
 	if (postL > postR) return NULL;
-	Node* root = new Node;
-
+	node* root = new node;
 	root->data = post[postR];
-	
+
 	int k;
-	for (int i = inL; i <= inR; i++) {
-		if (in[i] == post[postR]) {
+	for(int i = inL; i <= inR; i++) {
+		if (in[i] ==  root->data) {
 			k = i;
 			break;
 		}
 	}
 
-	int numLeft = k - inL;
-	
-	root->lchild = solve(postL, postL + numLeft -1, inL, k - 1);
-	root->rchild = solve(postL + numLeft, postR - 1, k+1, inR);
+	int numLeft =  k - inL;
+	root->left = solve(postL, postL+numLeft-1, inL, k-1);
+	root->right = solve(postL+numLeft, postR - 1, k+1, inR);
 
 	return root;
 }
 
-void BFS(Node* root) {
-	queue<Node*> Q;
+void BFS(node* root) {
+	queue<node*> Q;
 	Q.push(root);
-
-	while(!Q.empty()) {
-		Node* now = Q.front();
+	int num = 0;
+	while (!Q.empty()) {
+		node* now = Q.front();
 		printf("%d", now->data);
 		Q.pop();
-
 		num++;
 		if (num < N) {
 			printf(" ");
 		}
-
-		if (now->lchild) {
-			Q.push(now->lchild);
+		if (now->left) {
+			Q.push(now->left);
 		}
-		if (now->rchild) {
-			Q.push(now->rchild);
+
+		if (now->right) {
+			Q.push(now->right);
 		}
 	}
+
 }
 
-int main(void) {
+int main() {
 	scanf("%d", &N);
-	int i;
-
-	for (i = 0; i < N; i++) {
+	for (int i = 0; i < N; i++) {
 		scanf("%d", &post[i]);
 	}
-
-		for (i = 0; i < N; i++) {
+	for (int i = 0; i < N; i++) {
 		scanf("%d", &in[i]);
 	}
 
-	Node* root = solve(0, N-1, 0, N-1);
+	node* root = solve(0, N-1, 0, N-1);
 
 	BFS(root);
 
-    return 0;
+
+	return 0;
 }

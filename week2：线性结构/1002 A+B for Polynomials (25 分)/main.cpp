@@ -1,92 +1,88 @@
-#include <iostream>
+#include "stdafx.h"
+#pragma warning(disable:4996)
+#include <cstdio>
 
-using namespace std;
 struct node {
+	float value;
 	int exp;
-	float val;
 	node* next;
 };
-
-
-void Attach (float sum, int exp, node * & Rear) {
+void attach(node* &temp, float value, int exp) {
 	node * p = new node;
-	p->val = sum; p->exp = exp; p->next = NULL;
-	Rear->next = p;
-	Rear = p;
+	p->value = value; p->exp = exp; p->next=NULL;
+
+	temp->next = p;
+	temp = p;
 }
-node* formLink() {
-	int N, nodeExp ,i;
-	float nodeValue;
-	node *head, *Temp, *p;
 
-	head = new node;
+node* formLink(void) {
+	node* head = new node;
 	head->next = NULL;
-	Temp = head;
-
+	node* temp = head;
+	int N;
 	scanf("%d", &N);
-	for (i = 0; i < N; i++) {
-		scanf("%d %f", &nodeExp, &nodeValue);
-		Attach(nodeValue, nodeExp, Temp);
+	for (int i = 0; i < N; i++) {
+		float value;
+		int exp;
+		scanf("%d %f", &exp, &value);
+		attach(temp, value, exp);
 	}
+
 	return head->next;
 }
-int main(void) {
-	
-	node *head1 = formLink();
-	node *head2 = formLink();
 
-	node *P = new node;
-	node *Rear = P;
-	float sum;
+int main() {
+	node* link1 = formLink();
+	node* link2 = formLink();
+
+	node* result = new node;
+	node* temp = result;
 	int num = 0;
-	while (head1 && head2) {
-		if (head1->exp == head2->exp) {
-			sum = head1->val+ head2->val;
-			if (sum) {
-				Attach(sum, head1->exp, Rear);
+	while (link1 && link2) {
+		if (link1->exp == link2->exp) {
+			if (link1->value+link2->value != 0) {
+				attach(temp, link1->value+link2->value, link1->exp);
 				num++;
 			}
-			head1 = head1->next;
-			head2 = head2->next;
-		} else if (head1->exp > head2->exp) {
-			Attach(head1->val, head1->exp, Rear);
-			head1 = head1->next;
+			link1 = link1->next;
+			link2 = link2->next;
+		} else if (link1->exp > link2->exp) {
+			attach(temp, link1->value, link1->exp);
+			link1 = link1->next;
 			num++;
 		} else {
-			Attach(head2->val, head2->exp, Rear);
-			head2 = head2->next;
+			attach(temp, link2->value, link2->exp);
+			link2 = link2->next;
 			num++;
 		}
 	}
 
-	while (head1) {
-		Attach(head1->val, head1->exp, Rear);
-		head1 = head1->next;
+	while(link1) {
+		attach(temp, link1->value, link1->exp);
+		link1 = link1->next;
+		num++;
+	}
+	while(link2) {
+		attach(temp, link2->value, link2->exp);
+		link2 = link2->next;
 		num++;
 	}
 
-	while (head2) {
-		Attach(head2->val, head2->exp, Rear);
-		head2 = head2->next;
-		num++;
-	}
+	result = result->next;
+	node* p = result;
 
-	P = P->next;
-
-
-	if (!P) {
+	if (num == 0) {
 		printf("0");
 	} else {
 		printf("%d ", num);
-		while (P) {
-			printf("%d %.1f", P->exp, P->val);
-			P=P->next;
-			if (P) {
+		while (p) {
+			printf("%d %0.1f", p->exp, p->value);
+			p = p->next;
+			if (p) {
 				printf(" ");
 			}
 		}
+
 	}
-
-
-    return 0;
+	return 0;
 }
